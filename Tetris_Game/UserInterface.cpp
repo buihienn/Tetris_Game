@@ -61,7 +61,6 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Te
     // Create Rectangle to show score and next brick
     DrawRectangleRounded({ 520,195,170,60 }, 0.3, 6, GRAY);
     DrawRectangleRounded({ 520,315,170,180 }, 0.3, 6, GRAY);
-    DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 575,200 }, 50, 2, YELLOW);
 
     // Solve level 
     if (game.GetScore() < 10) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 595,202 }, 50, 2, YELLOW);
@@ -85,7 +84,7 @@ void DrawGameOver(Game& game, const float screenWidth, const float screenHeight,
     UnloadImage(image4);
 
     DrawTexture(texture4, 0, 0, WHITE);
-    DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 5, screenHeight / 2 + 60 }, 100, 2, YELLOW);
+
 
     if (game.GetScore() < 10) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 20, screenHeight / 2 + 75 }, 100, 2, YELLOW);
     if (game.GetScore() >= 100 && game.GetScore() < 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 63, screenHeight / 2 + 75 }, 100, 2, YELLOW);
