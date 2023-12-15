@@ -65,7 +65,7 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double &lastUpdateTime, Te
 }
 
 
-//void DrawGameOver(Game& game, const float screenWidth, const float screenHeight, GameState& gameState) {
+//void DrawGameOver(Game& game, const float screenWidth, const float screenHeight, GameState& gameState, Font &font) {
 //    // Render game-over screen
 //    BeginDrawing();
 //
