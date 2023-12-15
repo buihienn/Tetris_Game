@@ -43,7 +43,7 @@ Brick Game::RandomBrick() {
 void Game::Draw() {
 	grid.DrawGrid();
 	curBrick.Draw(120, 45);
-	nextBrick.Draw(465, 370);
+	DrawNextBrick(nextBrick.GetID());
 	ghostBrick = curBrick;
 	GhostMove();
 	if (gameOver) {
@@ -94,10 +94,6 @@ void Game::MoveDownInstant() {
 
 void Game::HandleInput() {
 	int keyPress = GetKeyPressed();
-	/*if (gameOver && keyPress != 0) {
-		gameOver = false;
-		Reset();
-	}*/
 	if (keyPress == KEY_LEFT) {
 		MoveLeft();
 		PlaySound(moveSound);
@@ -118,9 +114,6 @@ void Game::HandleInput() {
 		MoveDownInstant();
 	}
 
-	//if (IsKeyDown(KEY_DOWN)) {
-	//	MoveDown();
-	//}
 }
 
 bool Game::checkOutSide(Brick brick) {
@@ -218,3 +211,28 @@ void Game::GhostMove() {
 	}
 	ghostBrick.Draw(120, 45);
 }
+
+void Game::DrawNextBrick(int ID) {
+	if (ID == 1) { // L
+		nextBrick.Draw(475, 375);
+	}
+	else if (ID == 2) { // J
+		nextBrick.Draw(475, 375);
+	}
+	else if (ID == 3) { // I
+		nextBrick.Draw(457, 395);
+	}
+	else if (ID == 4) { // O
+		nextBrick.Draw(458, 380);
+	}
+	else if (ID == 5) { // S
+		nextBrick.Draw(473, 375);
+	}
+	else if (ID == 6) { // T
+		nextBrick.Draw(473, 375);
+	}
+	else if (ID == 7) { // Z
+		nextBrick.Draw(470, 375);
+	}
+}
+

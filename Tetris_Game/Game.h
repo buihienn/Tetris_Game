@@ -43,6 +43,7 @@ public:
 	int GetScore();
 	void DrawOver();
 	void GhostMove();
+	void DrawNextBrick(int ID);
 	Music music;
 	~Game();
 };
