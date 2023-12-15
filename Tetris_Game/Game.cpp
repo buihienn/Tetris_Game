@@ -42,8 +42,8 @@ Brick Game::RandomBrick() {
 
 void Game::Draw() {
 	grid.DrawGrid();
-	curBrick.Draw(110, 45);
-	nextBrick.Draw(270, 270);
+	curBrick.Draw(120, 45);
+	nextBrick.Draw(465, 370);
 	ghostBrick = curBrick;
 	GhostMove();
 	if (gameOver) {
@@ -216,5 +216,5 @@ void Game::GhostMove() {
 	if (checkOutSide(ghostBrick) || checkFit(ghostBrick) == false) {
 		ghostBrick.Move(-1, 0);
 	}
-	ghostBrick.Draw(110, 45);
+	ghostBrick.Draw(120, 45);
 }

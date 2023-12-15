@@ -45,7 +45,7 @@ void Grid::DrawGrid() {
 	for (int i = 0; i < numRow; i++) {
 		for (int j = 0; j < numCol; j++) {
 			int cellValue = grid[i][j];
-			DrawRectangle(j * sizeOfCell + 110, i * sizeOfCell + 45, sizeOfCell-0.2 , sizeOfCell - 0.2, colors[grid[i][j]]);
+			DrawRectangle(j * sizeOfCell + 120, i * sizeOfCell + 45, sizeOfCell-0.2 , sizeOfCell - 0.2, colors[grid[i][j]]);
 		}
 	}
 }
@@ -109,3 +109,4 @@ void Grid::DrawWhite() {
 		}
 	}
 }
+

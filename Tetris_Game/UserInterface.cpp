@@ -34,7 +34,7 @@ void DrawMenu(Music& menu_music, const float screenWidth, const float screenHeig
     EndDrawing();
 }
 
-void GamePlay(Game& game, bool gameOverButtonPressed, double &lastUpdateTime, Texture2D texture, GameState& gameState, Font &font) {
+void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Texture2D texture, GameState& gameState, Font& font) {
     SetTargetFPS(60);
 
     gameOverButtonPressed = false;
@@ -50,11 +50,17 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double &lastUpdateTime, Te
     //ClearBackground(darkBlue);
     DrawTexture(texture, 0, 0, WHITE);
     //ClearBackground(purple);
+    Vector2 tetrisPosition = { 120, 45 };
+    Vector2 tetrisSize = { 300, 600 };
+    Color borderColor = BLACK;
+    // Draw border Grid
+    DrawTetrisBox(tetrisPosition, tetrisSize, borderColor, 5);
+    DrawTextEx(font, "Score", { 550,155 }, 38, 2, ORANGE);
+    DrawTextEx(font, "Next", { 565,275 }, 38, 2, ORANGE);
 
-    DrawText(TextFormat("Score: %d", game.GetScore()), 320, 80, 20, RED);
-    DrawText(TextFormat("NEXT "), 350, 150, 20, BLUE);
-
-
+    DrawRectangleRounded({ 520,195,170,60 }, 0.3, 6, GRAY);
+    DrawRectangleRounded({ 520,315,170,180 }, 0.3, 6, GRAY);
+    DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 575,200 }, 50, 2, YELLOW);
 
     game.Draw();
     if (game.GetGameOver() == true)
@@ -64,36 +70,7 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double &lastUpdateTime, Te
     EndDrawing();
 }
 
-
-//void DrawGameOver(Game& game, const float screenWidth, const float screenHeight, GameState& gameState, Font &font) {
-//    // Render game-over screen
-//    BeginDrawing();
-//
-//    ClearBackground(WHITE);
-//    DrawText("GAME OVER", 320, 200, 30, RED);
-//
-//    // Draw a button to return to the menu
-//    Rectangle returnButtonBounds = { screenWidth / 2 - 50, screenHeight / 2 + 50, 100, 40 };
-//    DrawRectangleRec(returnButtonBounds, LIGHTGRAY);
-//
-//    if (CheckCollisionPointRec(GetMousePosition(), returnButtonBounds)) {
-//        DrawRectangleLinesEx(returnButtonBounds, 2, RED);
-//        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-//            gameState = GAMEPLAY; // Transition to MENU state if button is clicked
-//
-//            game.Reset();
-//        }
-//    }
-//    else {
-//        DrawRectangleLinesEx(returnButtonBounds, 2, DARKGRAY);
-//    }
-//
-//    DrawText("Return to Menu", returnButtonBounds.x + 5, returnButtonBounds.y + 10, 20, DARKGRAY);
-//
-//    EndDrawing();
-//}
-
-void DrawGameOver(Game& game, const float screenWidth, const float screenHeight, GameState& gameState, Font &font) {
+void DrawGameOver(Game& game, const float screenWidth, const float screenHeight, GameState& gameState, Font& font) {
     BeginDrawing();
     ClearBackground(WHITE);
 
@@ -102,7 +79,7 @@ void DrawGameOver(Game& game, const float screenWidth, const float screenHeight,
     UnloadImage(image4);
 
     DrawTexture(texture4, 0, 0, WHITE);
-    DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 15, screenHeight / 2 + 60 }, 100, 2, YELLOW);
+    DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 5, screenHeight / 2 + 60 }, 100, 2, YELLOW);
 
     Rectangle retryButtonBounds = { screenWidth / 2 - 92, screenHeight / 2 + 225, 70, 70 };
     Rectangle exitButtonBounds = { screenWidth / 2 + 33, screenHeight / 2 + 225, 70, 70 };
@@ -114,14 +91,20 @@ void DrawGameOver(Game& game, const float screenWidth, const float screenHeight,
         }
         else if (CheckCollisionPointRec(GetMousePosition(), exitButtonBounds)) {
             EndDrawing();
-            CloseWindow();
-            return;
-        }
+            //CloseWindow();
+            gameState = EXIT;
+        }   
     }
+
     EndDrawing();
 }
 
+void DrawTetrisBox(Vector2 position, Vector2 size, Color borderColor, int borderWidth) {
 
+    for (int i = 0; i < borderWidth; ++i) {
+        DrawRectangleLines((int)position.x - i, (int)position.y - i, (int)size.x + i * 2, (int)size.y + i * 2, borderColor);
+    }
+}
 
 void UserInterface(Game& game, double lastUpdateTime) {
     const float screenWidth = 820;
@@ -151,9 +134,11 @@ void UserInterface(Game& game, double lastUpdateTime) {
     while (!WindowShouldClose()) {
 
         switch (gameState) {
+
         case MENU:
             DrawMenu(menu_music, screenWidth, screenHeight, mousePressed, texture2, gameState);
             break;
+
         case RULES:
             BeginDrawing();
 
@@ -163,15 +148,18 @@ void UserInterface(Game& game, double lastUpdateTime) {
 
             EndDrawing();
             break;
-        case GAMEPLAY:
 
+        case GAMEPLAY:
             GamePlay(game, gameOverButtonPressed, lastUpdateTime, texture, gameState, font);
             break;
 
         case GAMEOVER:
             DrawGameOver(game, screenWidth, screenHeight, gameState, font);
-
             break;
+
+        case EXIT:
+            CloseWindow();
+            return;
         }
 
         CloseWindow();

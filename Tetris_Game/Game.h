@@ -6,7 +6,7 @@ enum GameState {
 	MENU,
 	GAMEPLAY,
 	GAMEOVER,
-	RULES
+	RULES, EXIT
 };
 class Game {
 private:
