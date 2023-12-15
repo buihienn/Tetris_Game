@@ -12,9 +12,17 @@ Brick::Brick() {
 
 void Brick::Draw(int offsetX, int offsetY) {
 	vector <Position> temp = GetCellPos();
-	for (int i = 0; i < temp.size(); i++) {
-		DrawRectangle(temp[i].getCol() * sizeOfCell + offsetX, (temp[i].getRow()) * sizeOfCell + offsetY, sizeOfCell - 1, sizeOfCell - 1, color);
+	if (isGhost) {
+		for (int i = 0; i < temp.size(); i++) {
+			DrawRectangleLines(temp[i].getCol() * sizeOfCell + offsetX, (temp[i].getRow()) * sizeOfCell + offsetY, sizeOfCell - 1, sizeOfCell - 1, color);
+		}
 	}
+	else {
+		for (int i = 0; i < temp.size(); i++) {
+			DrawRectangle(temp[i].getCol() * sizeOfCell + offsetX, (temp[i].getRow()) * sizeOfCell + offsetY, sizeOfCell - 1, sizeOfCell - 1, color);
+		}
+	}
+
 }
 
 void Brick::SetID(int id) {
@@ -53,6 +61,23 @@ void Brick::Unrotate() {
 	if (rotationState == -1) {
 		rotationState = cells.size() - 1;
 	}
+}
+
+Brick& Brick::operator=(const Brick& other) {
+	if (this != &other) {
+		sizeOfCell = other.sizeOfCell;
+		color = other.color;
+		rotationState = other.rotationState;
+		cells = other.cells;
+		rowOffset = other.rowOffset;
+		colOffset = other.colOffset;
+		id = other.id;
+	}
+	return *this;
+}
+
+void Brick::TurnToGhost() {
+	isGhost = true;
 }
 
 // LBrick

@@ -40,14 +40,6 @@ vector <Color> Grid::GetColors() {
 	return {darkGrey, green, red, orange, yellow, purple, cyan, blue };
 }
 
-//void Grid::DrawGrid() {
-//	for (int i = 0; i < numRow; i++) {
-//		for (int j = 0; j < numCol; j++) {
-//			int cellValue = grid[i][j];
-//			DrawRectangle(j * sizeOfCell + 1, (i - 3) * sizeOfCell + 1, sizeOfCell - 1, sizeOfCell - 1, colors[grid[i][j]]);
-//		}
-//	}
-//}
 
 void Grid::DrawGrid() {
 	for (int i = 0; i < numRow; i++) {
@@ -56,6 +48,7 @@ void Grid::DrawGrid() {
 			DrawRectangle(j * sizeOfCell + 11, i * sizeOfCell + 11, sizeOfCell-0.2 , sizeOfCell - 0.2, colors[grid[i][j]]);
 		}
 	}
+	/*DrawRectangle(j * sizeOfCell + 11, i * sizeOfCell + 11, sizeOfCell - 0.2, sizeOfCell - 0.2, colors[grid[i][j]]);*/
 }
 
 bool Grid::checkOutSide(int row, int col) {

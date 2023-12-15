@@ -14,6 +14,7 @@ private:
 	Grid grid;
 	Brick curBrick;
 	Brick nextBrick;
+	Brick ghostBrick;
 	bool gameOver;
 	int score;
 	Sound rotateSound;
@@ -32,15 +33,16 @@ public:
 	void MoveRight();
 	void MoveDown();
 	void MoveDownInstant();
-	bool checkOutSide();
+	bool checkOutSide(Brick brick);
 	void RotateBrick();
 	void LockBrick();
-	bool checkFit();
+	bool checkFit(Brick brick);
 	void Reset();
 	bool GetGameOver();
 	void UpdateScore(int numLineCleared);
 	int GetScore();
 	void DrawOver();
+	void GhostMove();
 	Music music;
 	~Game();
 };

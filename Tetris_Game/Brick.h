@@ -22,8 +22,8 @@ public:
 	void Rotate();
 	void Unrotate();
 	void SetID(int id);
-	//virtual void rotate() = 0;
-	//virtual ~Brick() {};
+	Brick& operator=(const Brick& other);
+	void TurnToGhost();
 };
 
 class LBrick : public Brick {

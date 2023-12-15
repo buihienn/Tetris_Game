@@ -5,6 +5,8 @@ Game::Game() {
 	bricks = { LBrick(), JBrick(), IBrick(), OBrick(), SBrick(), TBrick(), ZBrick() };
 	curBrick = RandomBrick();
 	nextBrick = RandomBrick();
+	ghostBrick = curBrick;
+	ghostBrick.TurnToGhost();
 	gameOver = false;
 	score = 0;
 	InitAudioDevice();
@@ -42,6 +44,8 @@ void Game::Draw() {
 	grid.DrawGrid();
 	curBrick.Draw(11, 11);
 	nextBrick.Draw(270, 270);
+	ghostBrick = curBrick;
+	GhostMove();
 	if (gameOver) {
 		DrawOver();
 	}
@@ -51,7 +55,7 @@ void Game::Draw() {
 void Game::MoveLeft() {
 	if (gameOver == false) {
 		curBrick.Move(0, -1);
-		if (checkOutSide() || checkFit() == false) {
+		if (checkOutSide(curBrick) || checkFit(curBrick) == false) {
 			curBrick.Move(0, 1);
 		}
 	}
@@ -60,7 +64,7 @@ void Game::MoveLeft() {
 void Game::MoveRight() {
 	if (gameOver == false) {
 		curBrick.Move(0, 1);
-		if (checkOutSide() || checkFit() == false) {
+		if (checkOutSide(curBrick) || checkFit(curBrick) == false) {
 			curBrick.Move(0, -1);
 		}
 	}
@@ -69,7 +73,7 @@ void Game::MoveRight() {
 void Game::MoveDown() {
 	if (gameOver == false) {
 		curBrick.Move(1, 0);
-		if (checkOutSide() || checkFit() == false) {
+		if (checkOutSide(curBrick) || checkFit(curBrick) == false) {
 			curBrick.Move(-1, 0);
 			LockBrick();
 		}
@@ -78,10 +82,10 @@ void Game::MoveDown() {
 
 void Game::MoveDownInstant() {
 	if (gameOver == false) {
-		while (checkFit()) {
+		while (checkFit(curBrick)) {
 			curBrick.Move(1, 0);
 		}
-		if (checkOutSide() || checkFit() == false) {
+		if (checkOutSide(curBrick) || checkFit(curBrick) == false) {
 			curBrick.Move(-1, 0);
 			LockBrick();
 		}
@@ -119,8 +123,8 @@ void Game::HandleInput() {
 	//}
 }
 
-bool Game::checkOutSide() {
-	vector <Position> temp = curBrick.GetCellPos();
+bool Game::checkOutSide(Brick brick) {
+	vector <Position> temp = brick.GetCellPos();
 	for (int i = 0; i < temp.size(); i++) {
 		if (grid.checkOutSide(temp[i].getRow(), temp[i].getCol())) {
 			return true;
@@ -132,7 +136,7 @@ bool Game::checkOutSide() {
 void Game::RotateBrick() {
 	if (gameOver == false) {
 		curBrick.Rotate();
-		if (checkOutSide() ||checkFit () == false) {
+		if (checkOutSide(curBrick) ||checkFit (curBrick) == false) {
 			curBrick.Unrotate();
 		}
 	}
@@ -145,7 +149,7 @@ void Game::LockBrick() {
 		grid.grid[temp[i].getRow()][temp[i].getCol()] = curBrick.GetID();
 	}
 	curBrick = nextBrick;
-	if (checkFit() == false) {
+	if (checkFit(curBrick) == false) {
 		gameOver = true;
 	}
 	nextBrick = RandomBrick();
@@ -158,8 +162,8 @@ bool Game::GetGameOver() {
 	return gameOver;
 }
 
-bool Game::checkFit() {
-	vector <Position> temp = curBrick.GetCellPos();
+bool Game::checkFit(Brick brick) {
+	vector <Position> temp = brick.GetCellPos();
 	for (int i = 0; i < temp.size(); i++) {
 		if (grid.checkEmpty(temp[i].getRow(), temp[i].getCol()) == false) {
 			return false;
@@ -202,4 +206,15 @@ void Game::DrawOver() {
 
 void Game::SetGameOver(bool temp) {
 	gameOver = temp;
+}
+
+void Game::GhostMove() {
+	while (checkFit(ghostBrick) && !checkOutSide(ghostBrick)) {
+		ghostBrick.Move(1, 0);
+	}
+
+	if (checkOutSide(ghostBrick) || checkFit(ghostBrick) == false) {
+		ghostBrick.Move(-1, 0);
+	}
+	ghostBrick.Draw(11, 11);
 }

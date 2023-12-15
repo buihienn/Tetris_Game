@@ -2,15 +2,15 @@
 
 int main() {
     
-            srand(time(NULL));
+    srand(time(NULL));
             
-            Game game;
-            double lastUpdateTime = GetTime();
+    Game game;
+    double lastUpdateTime = GetTime();
             
-            UserInterface(game, lastUpdateTime);
+    UserInterface(game, lastUpdateTime);
             
 
-            return 0;
+    return 0;
         
 
     
