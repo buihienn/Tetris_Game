@@ -9,16 +9,36 @@ bool Trigger(double interval, double& lastUpdateTime) {
     return false;
 }
 
+void DrawTetrisBox(Vector2 position, Vector2 size, Color borderColor, int borderWidth) {
+
+    for (int i = 0; i < borderWidth; ++i) {
+        DrawRectangleLines((int)position.x - i, (int)position.y - i, (int)size.x + i * 2, (int)size.y + i * 2, borderColor);
+    }
+}
+
+
+void IncreaseLevel(Game& game, int& level, float& speed, int& index)
+{
+    if (game.GetScore() > index) {
+        index += 100;
+        level++;
+        speed -= 0.2;
+    }
+}
+
 void DrawMenu(Music& menu_music, const float screenWidth, const float screenHeight, Sound& mousePressed, Texture2D& texture2, GameState& gameState) {
     BeginDrawing();
-    //InitAudioDevice();
 
+    //InitAudioDevice();
     PlayMusicStream(menu_music);
     UpdateMusicStream(menu_music);
     ClearBackground(RAYWHITE);
     DrawTexture(texture2, 0, 0, WHITE);
+
+
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 
+        //Create Button to join game or read Rules
         Rectangle startButtonBounds = { screenWidth / 2 - 115, screenHeight / 2 + 10, 200, 50 };
         Rectangle rulesButtonBounds = { screenWidth / 2 - 100, screenHeight / 2 + 90, 200, 50 };
         Vector2 mousePoint = GetMousePosition();
@@ -34,7 +54,7 @@ void DrawMenu(Music& menu_music, const float screenWidth, const float screenHeig
     EndDrawing();
 }
 
-void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Texture2D texture, GameState& gameState, Font& font) {
+void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Texture2D texture, GameState& gameState, Font& font, float& speed, int& index, int& level) {
     SetTargetFPS(60);
 
     gameOverButtonPressed = false;
@@ -62,10 +82,16 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Te
     DrawRectangleRounded({ 520,195,170,60 }, 0.3, 6, GRAY);
     DrawRectangleRounded({ 520,315,170,180 }, 0.3, 6, GRAY);
 
-    // Solve level 
+    // Solve Score
     if (game.GetScore() < 10) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 595,202 }, 50, 2, YELLOW);
     if (game.GetScore() >= 100 && game.GetScore() < 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 572,202 }, 50, 2, YELLOW);
     if (game.GetScore() >= 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 560,202 }, 50, 2, YELLOW);
+
+    // Draw level
+    DrawTextEx(font, "Level", { 550,120 }, 38, 2, ORANGE);
+    DrawRectangleRounded({ 670,115,50,50 }, 0.3, 6, GRAY);
+    DrawTextEx(font, (to_string(level).c_str()), { 685,115 }, 50, 2, YELLOW);
+
 
     game.Draw();
     if (game.GetGameOver() == true)
@@ -108,12 +134,6 @@ void DrawGameOver(Game& game, const float screenWidth, const float screenHeight,
     EndDrawing();
 }
 
-void DrawTetrisBox(Vector2 position, Vector2 size, Color borderColor, int borderWidth) {
-
-    for (int i = 0; i < borderWidth; ++i) {
-        DrawRectangleLines((int)position.x - i, (int)position.y - i, (int)size.x + i * 2, (int)size.y + i * 2, borderColor);
-    }
-}
 
 void UserInterface(Game& game, double lastUpdateTime) {
     const float screenWidth = 820;
@@ -140,26 +160,27 @@ void UserInterface(Game& game, double lastUpdateTime) {
     bool gameOverButtonPressed = false;
     Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
 
+    int level = 1;
+    float speed = 1.25;
+    int index = 100;
+
     while (!WindowShouldClose()) {
-
         switch (gameState) {
-
         case MENU:
             DrawMenu(menu_music, screenWidth, screenHeight, mousePressed, texture2, gameState);
             break;
 
         case RULES:
             BeginDrawing();
-
             DrawTexture(texture3, 0, 0, WHITE);
+            // Click mouse left any position can out of Table of rule and return to MENU
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
                 gameState = MENU;
-
             EndDrawing();
             break;
 
         case GAMEPLAY:
-            GamePlay(game, gameOverButtonPressed, lastUpdateTime, texture, gameState, font);
+            GamePlay(game, gameOverButtonPressed, lastUpdateTime, texture, gameState, font, speed, index, level);
             break;
 
         case GAMEOVER:
@@ -170,7 +191,6 @@ void UserInterface(Game& game, double lastUpdateTime) {
             CloseWindow();
             return;
         }
-
         CloseWindow();
     }
 }
