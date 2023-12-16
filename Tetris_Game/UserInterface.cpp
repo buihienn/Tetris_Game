@@ -78,6 +78,8 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Te
     DrawTextEx(font, "Score", { 550,155 }, 38, 2, ORANGE);
     DrawTextEx(font, "Next", { 565,275 }, 38, 2, ORANGE);
 
+
+
     // Create Rectangle to show score and next brick
     DrawRectangleRounded({ 520,195,170,60 }, 0.3, 6, GRAY);
     DrawRectangleRounded({ 520,315,170,180 }, 0.3, 6, GRAY);
@@ -88,9 +90,9 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Te
     if (game.GetScore() >= 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 560,202 }, 50, 2, YELLOW);
 
     // Draw level
-    DrawTextEx(font, "Level", { 550,120 }, 38, 2, ORANGE);
-    DrawRectangleRounded({ 670,115,50,50 }, 0.3, 6, GRAY);
-    DrawTextEx(font, (to_string(level).c_str()), { 685,115 }, 50, 2, YELLOW);
+    DrawTextEx(font, "Level", { 565,510 }, 38, 2, ORANGE);
+    DrawRectangleRounded({ 575,550,70,70 }, 0.3, 6, GRAY);
+    DrawTextEx(font, (to_string(level).c_str()), { 602,560 }, 60, 2, YELLOW);
 
 
     game.Draw();
