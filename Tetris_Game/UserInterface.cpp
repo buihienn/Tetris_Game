@@ -89,6 +89,8 @@ void GamePlay(Game& game, bool gameOverButtonPressed, double& lastUpdateTime, Te
     if (game.GetScore() >= 100 && game.GetScore() < 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 572,202 }, 50, 2, YELLOW);
     if (game.GetScore() >= 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { 560,202 }, 50, 2, YELLOW);
 
+    // Increase Level base on score
+    IncreaseLevel(game, level, speed, index);
     // Draw level
     DrawTextEx(font, "Level", { 565,510 }, 38, 2, ORANGE);
     DrawRectangleRounded({ 575,550,70,70 }, 0.3, 6, GRAY);
@@ -114,9 +116,9 @@ void DrawGameOver(Game& game, const float screenWidth, const float screenHeight,
     DrawTexture(texture4, 0, 0, WHITE);
 
 
-    if (game.GetScore() < 10) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 20, screenHeight / 2 + 75 }, 100, 2, YELLOW);
-    if (game.GetScore() >= 100 && game.GetScore() < 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 63, screenHeight / 2 + 75 }, 100, 2, YELLOW);
-    if (game.GetScore() >= 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 90, screenHeight / 2 + 75 }, 100, 2, YELLOW);
+    if (game.GetScore() < 10) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 20, screenHeight / 2 + 75 }, 100, 2, RED);
+    if (game.GetScore() >= 100 && game.GetScore() < 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 63, screenHeight / 2 + 75 }, 100, 2, RED);
+    if (game.GetScore() >= 1000) DrawTextEx(font, (to_string(game.GetScore()).c_str()), { screenWidth / 2 - 90, screenHeight / 2 + 75 }, 100, 2, RED);
 
     Rectangle retryButtonBounds = { screenWidth / 2 - 92, screenHeight / 2 + 225, 70, 70 };
     Rectangle exitButtonBounds = { screenWidth / 2 + 33, screenHeight / 2 + 225, 70, 70 };
